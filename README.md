@@ -8,7 +8,7 @@ Every non-trivial behavior claim is backed by a Postman test and saved request/r
 
 ## Live docs
 
-- Hosted (GitHub Pages): <REPLACE_WITH_GITHUB_PAGES_URL>
+- Hosted (GitHub Pages): `https://derrickscottux-collab.github.io/github-issues-openapi-portfolio`
 - Local build output: `docs/index.html`
 
 ## Scope
