@@ -1,0 +1,1697 @@
+openapi: 3.0.3
+info:
+  title: GitHub Issues API (Portfolio Scope)
+  version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  description: 'Evidence-based OpenAPI 3.0.3 specification for a tested subset of the GitHub Issues REST API.
+
+
+    Scope:
+
+    - Only the endpoints and behaviors documented in this file are in scope.
+
+    - This is not GitHub''s complete REST API surface.
+
+
+    Evidence approach:
+
+    - Non-trivial behavioral claims include a "Verified in: Test #X" line that maps to the Postman test suite and evidence
+    packets.'
+servers:
+  - url: https://api.github.com
+    description: GitHub REST API
+security:
+  - GitHubToken: []
+tags:
+  - name: Issues
+    description: Repository issues (includes pull requests in list results).
+  - name: IssueComments
+    description: Issue comments (list/create on an issue, and comment CRUD by id).
+paths:
+  /repos/{owner}/{repo}/issues:
+    get:
+      tags:
+        - Issues
+      operationId: listRepoIssues
+      summary: List repository issues
+      description: 'List issues for a repository.
+
+
+        Default behavior:
+
+        - Defaults to `state=open` when `state` is omitted.
+
+        - Default `per_page` is 30.
+
+        - Results may include pull requests.
+
+
+        Pagination:
+
+        - Use `per_page` and `page`.
+
+
+        Verified in: Test #1, Test #2, Test #11, Test #12, Test #13'
+      parameters:
+        - $ref: '#/components/parameters/Owner'
+        - $ref: '#/components/parameters/Repo'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/State'
+        - $ref: '#/components/parameters/Labels'
+        - $ref: '#/components/parameters/Assignee'
+        - $ref: '#/components/parameters/Creator'
+        - $ref: '#/components/parameters/Mentioned'
+        - $ref: '#/components/parameters/Sort'
+        - $ref: '#/components/parameters/Direction'
+        - $ref: '#/components/parameters/Since'
+        - $ref: '#/components/parameters/AcceptHeader'
+        - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: OK (array of issues)
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/XRateLimitLimit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/XRateLimitRemaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/XRateLimitReset'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Issue'
+              examples:
+                defaultOpen:
+                  summary: Default behavior (open issues, 30 results)
+                  value:
+                    - number: 35400
+                      title: Example issue title
+                      state: open
+                      labels: []
+                      assignees: []
+                      comments: 8
+                      created_at: '2025-12-21T16:57:38Z'
+                      updated_at: '2025-12-21T17:20:22Z'
+                default:
+                  $ref: '#/components/examples/ListIssuesDefault200'
+                invalidSortFallback:
+                  $ref: '#/components/examples/ListIssuesInvalidSortFallbackResponse'
+        '401':
+          $ref: '#/components/responses/RequiresAuthentication'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+    post:
+      tags:
+        - Issues
+      operationId: createIssue
+      summary: Create an issue
+      description: 'Create a new issue.
+
+
+        Required:
+
+        - `title` is required.
+
+
+        Validation:
+
+        - Missing `title` returns 422.
+
+
+        Empty arrays:
+
+        - `labels: []` is accepted and returned as `labels: []`.
+
+        - `assignees: []` is accepted and returned as `assignees: []` with `assignee: null`.
+
+
+        Verified in: Test #6, Test #7, Test #37, Test #38, Test #54, Test #55'
+      parameters:
+        - $ref: '#/components/parameters/Owner'
+        - $ref: '#/components/parameters/Repo'
+        - $ref: '#/components/parameters/AcceptHeader'
+        - $ref: '#/components/parameters/ApiVersionHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueCreateRequest'
+            examples:
+              minimal:
+                $ref: '#/components/examples/CreateIssueMinimalRequest'
+              allFields:
+                summary: Create with optional fields (body, labels, assignees)
+                value:
+                  title: Test Issue - All Fields
+                  body: 'This is a test issue created via API.
+
+
+                    ## Testing
+
+                    - Markdown support
+
+                    - Multiple lines'
+                  labels:
+                    - bug
+                    - documentation
+                  assignees:
+                    - derrickscottux-collab
+      responses:
+        '201':
+          description: 'Created (Verified in: Test #26)'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/XRateLimitLimit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/XRateLimitRemaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/XRateLimitReset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+              examples:
+                created:
+                  $ref: '#/components/examples/CreateIssueMinimalResponse201'
+        '401':
+          $ref: '#/components/responses/RequiresAuthentication'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+  /repos/{owner}/{repo}/issues/{issue_number}:
+    get:
+      tags:
+        - Issues
+      operationId: getIssue
+      summary: Get an issue
+      description: 'Retrieve a single issue by number.
+
+
+        Notes:
+
+        - Returns a JSON object (not an array).
+
+        - Issue responses may include pull request metadata when the issue is a pull request.
+
+        - The body representation fields depend on the `Accept` header (see `Accept` parameter).
+
+
+        Verified in: Test #5, Test #31, Test #32, Test #33, Test #34'
+      parameters:
+        - $ref: '#/components/parameters/Owner'
+        - $ref: '#/components/parameters/Repo'
+        - $ref: '#/components/parameters/IssueNumber'
+        - $ref: '#/components/parameters/AcceptHeader'
+        - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: OK (issue object)
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/XRateLimitLimit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/XRateLimitRemaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/XRateLimitReset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+              examples:
+                issue1:
+                  summary: Example issue (facebook/react
+                  value:
+                    number: 1
+                    title: Run each test in its own <iframe>
+                    state: closed
+                    body: This is not blocking the initial launch...
+                    created_at: '2013-05-29T20:20:53Z'
+                    updated_at: '2025-12-19T20:59:36Z'
+                    closed_at: '2013-06-03T17:58:02Z'
+                    pull_request:
+                      url: https://api.github.com/repos/facebook/react/pulls/1
+                    labels: []
+                    assignees: []
+                    comments: 5
+                defaultMedia:
+                  $ref: '#/components/examples/GetIssueDefaultMedia200'
+                fullMedia:
+                  $ref: '#/components/examples/GetIssueFullMedia200'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags:
+        - Issues
+      operationId: updateIssue
+      summary: Update an issue
+      description: 'Partially update an issue (PATCH semantics).
+
+
+        Common updates:
+
+        - Update title only.
+
+        - Close issue using `state=closed` with `state_reason=completed` or `state_reason=not_planned`.
+
+        - Close issue using `state=closed` without `state_reason` returns `state_reason=completed`.
+
+        - Reopen issue using `state=open` returns `state_reason=reopened`.
+
+
+        Empty arrays:
+
+        - `labels: []` clears labels.
+
+        - `assignees: []` clears assignees and sets `assignee: null`.
+
+
+        Validation:
+
+        - Invalid `state` can return 422 validation errors.
+
+        - Setting `state_reason=reopened` while closing (`state=closed`) returns 422.
+
+
+        Permissions:
+
+        - Update attempts without sufficient repository permissions return `403 Forbidden`.
+
+
+        Verified in: Test #8, Test #9, Test #41, Test #56, Test #57, Test #60, Test #61, Test #62, Test #63, Test #67, Test
+        #79'
+      parameters:
+        - $ref: '#/components/parameters/Owner'
+        - $ref: '#/components/parameters/Repo'
+        - $ref: '#/components/parameters/IssueNumber'
+        - $ref: '#/components/parameters/AcceptHeader'
+        - $ref: '#/components/parameters/ApiVersionHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueUpdateRequest'
+            examples:
+              updateTitle:
+                summary: Update only the title
+                value:
+                  title: 'Updated Title via API - Test #8'
+              closeWithReason:
+                summary: Close an issue with a reason
+                value:
+                  state: closed
+                  state_reason: completed
+              closeCompleted:
+                $ref: '#/components/examples/PatchIssueCloseCompletedRequest'
+              clearLabelsEmptyArray:
+                $ref: '#/components/examples/UpdateIssueClearLabelsEmptyArrayRequest'
+              clearAssigneesEmptyArray:
+                $ref: '#/components/examples/UpdateIssueClearAssigneesEmptyArrayRequest'
+      responses:
+        '200':
+          description: OK (updated issue)
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/XRateLimitLimit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/XRateLimitRemaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/XRateLimitReset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+              examples:
+                closeCompleted:
+                  $ref: '#/components/examples/PatchIssueCloseCompletedResponse200'
+                clearLabelsEmptyArray:
+                  $ref: '#/components/examples/UpdateIssueClearLabelsEmptyArrayResponse'
+                clearAssigneesEmptyArray:
+                  $ref: '#/components/examples/UpdateIssueClearAssigneesEmptyArrayResponse'
+        '401':
+          $ref: '#/components/responses/RequiresAuthentication'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+  /repos/{owner}/{repo}/issues/{issue_number}/comments:
+    get:
+      tags:
+        - IssueComments
+      operationId: listIssueComments
+      summary: List comments on an issue
+      description: 'List comments for an issue.
+
+
+        Behavior:
+
+        - Returns an array of comment objects.
+
+
+        Filters:
+
+        - `since` filters by `updated_at` timestamp.
+
+
+        Pagination:
+
+        - Use `per_page` and `page`.
+
+
+        Verified in: Test #10, Test #29, Test #30'
+      parameters:
+        - $ref: '#/components/parameters/Owner'
+        - $ref: '#/components/parameters/Repo'
+        - $ref: '#/components/parameters/IssueNumber'
+        - $ref: '#/components/parameters/AcceptHeader'
+        - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: OK (array of comments)
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/XRateLimitLimit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/XRateLimitRemaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/XRateLimitReset'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IssueComment'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      tags:
+        - IssueComments
+      operationId: createIssueComment
+      summary: Create a comment on an issue
+      description: 'Create a comment on an issue.
+
+
+        Required:
+
+        - `body` is required.
+
+
+        Validation:
+
+        - Missing or empty `body` returns 422.
+
+
+        Verified in: Test #23, Test #24, Test #64'
+      parameters:
+        - $ref: '#/components/parameters/Owner'
+        - $ref: '#/components/parameters/Repo'
+        - $ref: '#/components/parameters/IssueNumber'
+        - $ref: '#/components/parameters/AcceptHeader'
+        - $ref: '#/components/parameters/ApiVersionHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueCommentCreateRequest'
+            examples:
+              create:
+                summary: Create a comment
+                value:
+                  body: Thanks! Reproduced on the latest version.
+              basic:
+                $ref: '#/components/examples/CreateCommentRequest'
+      responses:
+        '201':
+          description: 'Created. (Test #26, Test #27, Test #28)'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/XRateLimitLimit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/XRateLimitRemaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/XRateLimitReset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueComment'
+              examples:
+                created:
+                  $ref: '#/components/examples/CreateCommentResponse201'
+        '401':
+          $ref: '#/components/responses/RequiresAuthentication'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+  /repos/{owner}/{repo}/issues/comments/{comment_id}:
+    get:
+      tags:
+        - IssueComments
+      operationId: getIssueComment
+      summary: Get an issue comment
+      description: 'Retrieve a single issue comment by comment ID.
+
+
+        Verified in: Test #25'
+      parameters:
+        - $ref: '#/components/parameters/Owner'
+        - $ref: '#/components/parameters/Repo'
+        - $ref: '#/components/parameters/CommentId'
+        - $ref: '#/components/parameters/AcceptHeader'
+        - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: 'OK (comment object). (Test #69)'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueComment'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags:
+        - IssueComments
+      operationId: updateIssueComment
+      summary: Update an issue comment
+      description: 'Update an issue comment.
+
+
+        Required:
+
+        - `body` is required.
+
+
+        Validation:
+
+        - Missing or empty `body` returns 422.
+
+
+        Verified in: Test #26, Test #65'
+      parameters:
+        - $ref: '#/components/parameters/Owner'
+        - $ref: '#/components/parameters/Repo'
+        - $ref: '#/components/parameters/CommentId'
+        - $ref: '#/components/parameters/AcceptHeader'
+        - $ref: '#/components/parameters/ApiVersionHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueCommentUpdateRequest'
+      responses:
+        '200':
+          description: 'OK (comment updated). (Test #70)'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueComment'
+        '401':
+          $ref: '#/components/responses/RequiresAuthentication'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+    delete:
+      tags:
+        - IssueComments
+      operationId: deleteIssueComment
+      summary: Delete an issue comment
+      description: 'Delete an issue comment.
+
+
+        Observed:
+
+        - Returns `204 No Content` on success.
+
+
+        Verified in: Test #27'
+      parameters:
+        - $ref: '#/components/parameters/Owner'
+        - $ref: '#/components/parameters/Repo'
+        - $ref: '#/components/parameters/CommentId'
+        - $ref: '#/components/parameters/AcceptHeader'
+        - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: 'No Content. (Test #71)'
+        '401':
+          $ref: '#/components/responses/RequiresAuthentication'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    GitHubToken:
+      type: http
+      scheme: bearer
+      bearerFormat: GitHub token
+      description: 'Personal Access Token (PAT) used as a Bearer token.
+
+
+        Notes:
+
+        - Some endpoints require authentication.
+
+        - Permission and scope requirements vary by repository and action.'
+  parameters:
+    Owner:
+      name: owner
+      in: path
+      required: true
+      description: Repository owner (organization or user).
+      schema:
+        type: string
+      example: facebook
+    Repo:
+      name: repo
+      in: path
+      required: true
+      description: Repository name.
+      schema:
+        type: string
+      example: react
+    IssueNumber:
+      name: issue_number
+      in: path
+      required: true
+      description: Issue number.
+      schema:
+        type: string
+        pattern: '^[0-9]+$'
+      example: '1'
+    CommentId:
+      name: comment_id
+      in: path
+      required: true
+      description: Issue comment id.
+      schema:
+        type: integer
+        minimum: 1
+    AcceptHeader:
+      name: Accept
+      in: header
+      required: false
+      description: 'Optional media type for GitHub REST API responses.
+
+
+        Tested variants:
+
+        - `application/vnd.github+json` (default): returns `body` only.
+
+        - `application/vnd.github.text+json`: returns `body_text` only.
+
+        - `application/vnd.github.html+json`: returns `body_html` only.
+
+        - `application/vnd.github.full+json`: returns `body`, `body_text`, and `body_html`.
+
+
+        Verified in: Test #31, Test #32, Test #33, Test #34'
+      schema:
+        type: string
+        default: application/vnd.github+json
+      example: application/vnd.github+json
+    ApiVersionHeader:
+      name: X-GitHub-Api-Version
+      in: header
+      required: false
+      description: 'Optional GitHub API version header.
+
+
+        Notes:
+
+        - Tests used `X-GitHub-Api-Version: 2022-11-28`.
+
+        - Responses also include `x-github-api-version-selected` indicating the selected version.
+
+
+        Verified in: Test #1'
+      schema:
+        type: string
+        default: '2022-11-28'
+      example: '2022-11-28'
+    PerPage:
+      name: per_page
+      in: query
+      required: false
+      description: 'Results per page.
+
+
+        Behavior:
+
+        - Default: 30 when omitted. (Test #1)
+
+        - Maximum effective page size: 100. (Test #13)
+
+        - Values >100 are silently capped to 100. (Test #43)
+
+        - Values <=0 default to 30. (Test #44, Test #45)'
+      schema:
+        type: integer
+        default: 30
+    Page:
+      name: page
+      in: query
+      required: false
+      description: 'Page number of results to fetch.
+
+
+        Behavior:
+
+        - Default: 1 when omitted. (Test #12)
+
+        - page=0 is treated as page 1. (Test #46)
+
+        - Very high page values may return 422. (Test #47)'
+      schema:
+        type: integer
+        default: 1
+        minimum: 0
+    State:
+      name: state
+      in: query
+      required: false
+      description: 'Filter issues by state.
+
+
+        Defaults:
+
+        - If omitted, GitHub defaults to `open`.
+
+
+        Verified in: Test #1, Test #2, Test #3, Test #4'
+      schema:
+        type: string
+        enum:
+          - open
+          - closed
+          - all
+        default: open
+    Labels:
+      name: labels
+      in: query
+      required: false
+      description: 'Filter issues by labels.
+
+
+        Format:
+
+        - Comma-separated label names (for example: `bug,help wanted`).
+
+
+        Behavior:
+
+        - Multiple labels use AND semantics (issue must have all specified labels).
+
+        - A non-existent label returns `200 OK` with an empty array.
+
+
+        Verified in: Test #14, Test #15'
+      schema:
+        type: string
+      examples:
+        single:
+          value: bug
+        multiple:
+          value: bug,extension
+    Assignee:
+      name: assignee
+      in: query
+      required: false
+      description: 'Filter issues by assignee.
+
+
+        Accepted values:
+
+        - A username (for example: `octocat`).
+
+        - `none` for issues with no assignee.
+
+        - `*` for issues assigned to any user.
+
+
+        Verified in: Test #16'
+      schema:
+        type: string
+      examples:
+        username:
+          value: hoxyq
+        none:
+          value: none
+        any:
+          value: '*'
+    Creator:
+      name: creator
+      in: query
+      required: false
+      description: 'Filter by the issue creator username. (Verified in: Test #17)'
+      schema:
+        type: string
+    Mentioned:
+      name: mentioned
+      in: query
+      required: false
+      description: 'Filter by a user mentioned in the issue body or comments. (Verified in: Test #18)'
+      schema:
+        type: string
+    Sort:
+      name: sort
+      in: query
+      required: false
+      description: 'Sort issues.
+
+
+        Allowed values: `created`, `updated`, `comments`.
+
+
+        Fallback:
+
+        - If `sort` is invalid, GitHub falls back to `created`.
+
+
+        Verified in: Test #17, Test #18, Test #19, Test #77'
+      schema:
+        type: string
+        enum:
+          - created
+          - updated
+          - comments
+        default: created
+      examples:
+        created:
+          value: created
+          summary: Sort by creation date (newest first by default)
+        updated:
+          value: updated
+          summary: Sort by last update (most recently updated first)
+        comments:
+          value: comments
+          summary: Sort by comment count (most commented first)
+    Direction:
+      name: direction
+      in: query
+      required: false
+      description: 'Sort direction.
+
+
+        Defaults:
+
+        - If omitted, GitHub defaults to `desc`.
+
+
+        Verified in: Test #20, Test #21'
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        default: desc
+    Since:
+      name: since
+      in: query
+      required: false
+      description: 'Only issues updated at or after this time are returned.
+
+
+        Observed in tests as ISO 8601 `date-time` (e.g., `2024-01-01T00:00:00Z`). (Verified in: Test #23)'
+      schema:
+        type: string
+        format: date-time
+  headers:
+    Link:
+      description: RFC 5988 pagination links (e.g., `rel="next"`).
+      schema:
+        type: string
+      example: <https://api.github.com/repositories/10270250/issues?per_page=30&page=2>; rel="next"
+    XRateLimitLimit:
+      description: The rate limit ceiling for the request.
+      schema:
+        type: string
+      example: '5000'
+    XRateLimitRemaining:
+      description: Remaining requests in the current rate limit window.
+      schema:
+        type: string
+      example: '4999'
+    XRateLimitReset:
+      description: UTC epoch seconds when the rate limit window resets.
+      schema:
+        type: string
+      example: '1766388842'
+  responses:
+    NotFound:
+      description: 'Not Found.
+
+
+        Verified in: Test #35, Test #36, Test #40, Test #72, Test #73, Test #74'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            notFound:
+              summary: Typical 404
+              value:
+                message: Not Found
+                documentation_url: https://docs.github.com/rest
+                status: '404'
+    RequiresAuthentication:
+      description: Requires authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            authRequired:
+              value:
+                message: Requires authentication
+                documentation_url: https://docs.github.com/rest
+                status: '401'
+    Forbidden:
+      description: Forbidden (insufficient permissions or policy restrictions)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            forbidden:
+              $ref: '#/components/examples/PatchIssueForbidden403'
+    ValidationFailed:
+      description: Validation Failed / Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            anyOf:
+              - $ref: '#/components/schemas/Error'
+              - $ref: '#/components/schemas/ValidationError'
+          examples:
+            missingTitle:
+              $ref: '#/components/examples/CreateIssueMissingTitle422'
+            invalidStateReasonTransition:
+              $ref: '#/components/examples/PatchIssueInvalidStateReasonTransition422'
+            titleBlank:
+              summary: Title can't be blank
+              value:
+                message: Validation Failed
+                errors:
+                  - message: title can't be blank
+                    value:
+                    resource: Issue
+                    field: title
+                    code: invalid
+                documentation_url: https://docs.github.com/rest/issues/issues#create-an-issue
+                status: '422'
+            commentBodyBlank:
+              summary: Comment body cannot be blank
+              value:
+                message: Validation Failed
+                errors:
+                  - resource: IssueComment
+                    code: unprocessable
+                    field: data
+                    message: Body cannot be blank
+                documentation_url: https://docs.github.com/rest/issues/comments#create-an-issue-comment
+                status: '422'
+  schemas:
+    IssueCreateRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          description: The title of the issue.
+          minLength: 1
+        body:
+          type: string
+          description: Markdown-supported issue body.
+        labels:
+          type: array
+          description: 'Label names to apply.
+
+
+            Observed: labels applied successfully when the caller has permission. (Verified in: Test #7)
+
+            Observed: GitHub accepts `labels: []` during issue creation and returns `labels: []` in the created issue response.
+            (Verified in: Test #54)'
+          items:
+            type: string
+        assignees:
+          type: array
+          description: 'Usernames to assign to this issue.
+
+
+            Observed: assignees applied successfully when caller has permission. (Verified in: Test #7)
+
+            Observed: GitHub accepts `assignees: []` during issue creation and returns `assignees: []` and `assignee: null`
+            in the created issue response. (Verified in: Test #55)'
+          items:
+            type: string
+    IssueUpdateRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        title:
+          type: string
+          description: New issue title.
+        body:
+          type: string
+          description: New issue body.
+        state:
+          type: string
+          description: Issue state.
+          enum:
+            - open
+            - closed
+        state_reason:
+          type: string
+          description: 'Reason for closing or reopening an issue.
+
+
+            Observed behavior:
+
+            - Closing with `state_reason=completed` or `state_reason=not_planned` is accepted.
+
+            - Reopening returns `state_reason=reopened`.
+
+            - Closing without a `state_reason` returns `state_reason=completed`.
+
+
+            Validation:
+
+            - `state_reason=reopened` is invalid when closing (`state=closed`) and returns 422.
+
+
+            Verified in: Test #60, Test #61, Test #62, Test #63, Test #79'
+          enum:
+            - completed
+            - not_planned
+            - reopened
+        labels:
+          type: array
+          description: 'Label names to set on the issue (replace semantics).
+
+
+            Observed: Sending `labels: []` clears all labels; response returns `labels: []`. (Verified in: Test #75)
+
+            Observed: Update attempts without sufficient repository permissions return 403 Forbidden (not a silent drop).
+            (Verified in: Test #67)'
+          items:
+            type: string
+        assignees:
+          type: array
+          description: 'Usernames to assign to this issue (replace semantics).
+
+
+            Observed: Sending `assignees: []` clears all assignees; response returns `assignees: []` and `assignee: null`.
+            (Verified in: Test #76)
+
+            Observed: Update attempts without sufficient repository permissions return 403 Forbidden. (Verified in: Test #67)'
+          items:
+            type: string
+    IssueCommentCreateRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - body
+      properties:
+        body:
+          type: string
+          minLength: 1
+          description: The contents of the comment (Markdown supported).
+    IssueCommentUpdateRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - body
+      properties:
+        body:
+          type: string
+          minLength: 1
+          description: Updated comment body (Markdown supported).
+    Issue:
+      type: object
+      description: A GitHub Issue object (simplified to fields supported by test evidence).
+      properties:
+        id:
+          type: integer
+          format: int64
+        url:
+          type: string
+          format: uri
+          description: 'API URL for this issue. (Verified in: Test #31)'
+        html_url:
+          type: string
+          format: uri
+          description: 'Web URL for this issue or pull request. (Verified in: Test #31)'
+        comments_url:
+          type: string
+          format: uri
+          description: 'API URL for this issue''s comments. (Verified in: Test #31)'
+        timeline_url:
+          type: string
+          format: uri
+          description: 'API URL for timeline events. (Verified in: Test #31)'
+        node_id:
+          type: string
+          description: 'GraphQL node ID. (Verified in: Test #31)'
+        reactions:
+          type: object
+          description: 'Reaction summary counts. (Verified in: Test #31)'
+          additionalProperties: true
+        draft:
+          type: boolean
+          description: 'Present for pull requests; indicates whether the PR is a draft. (Verified in: Test #31)'
+        performed_via_github_app:
+          type: object
+          nullable: true
+          description: 'Present when performed via a GitHub App; null when not applicable. (Verified in: Test #31)'
+        number:
+          type: integer
+          format: int32
+        title:
+          type: string
+        state:
+          type: string
+          enum:
+            - open
+            - closed
+        state_reason:
+          type: string
+          nullable: true
+        locked:
+          type: boolean
+        body:
+          type: string
+          nullable: true
+          description: Issue body as Markdown text.
+        body_html:
+          type: string
+          nullable: true
+          description: 'HTML rendering of the Markdown `body`.
+
+
+            Returned when requesting an HTML-capable representation via `Accept`:
+
+            - `application/vnd.github.html+json` returns `body_html` only.
+
+            - `application/vnd.github.full+json` returns `body`, `body_text`, and `body_html`.
+
+
+            Verified in: Test #33, Test #34'
+        body_text:
+          type: string
+          nullable: true
+          description: 'Plain-text rendering of the Markdown `body`.
+
+
+            Returned when requesting a text-capable representation via `Accept`:
+
+            - `application/vnd.github.text+json` returns `body_text` only.
+
+            - `application/vnd.github.full+json` returns `body`, `body_text`, and `body_html`.
+
+
+            Verified in: Test #32, Test #34'
+        user:
+          $ref: '#/components/schemas/User'
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+        assignee:
+          $ref: '#/components/schemas/UserOrNull'
+        assignees:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        comments:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+        closed_by:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/User'
+          nullable: true
+        pull_request:
+          allOf:
+            - $ref: '#/components/schemas/PullRequestRef'
+          description: 'Present only when the item is a pull request.
+
+            GitHub treats pull requests as issues in list responses.
+
+
+            Verified in: Test #1, Test #31'
+      required:
+        - number
+        - title
+        - state
+        - labels
+        - assignees
+        - comments
+        - created_at
+        - updated_at
+    PullRequestRef:
+      type: object
+      nullable: true
+      description: Present when the issue represents a pull request.
+      properties:
+        url:
+          type: string
+          format: uri
+        html_url:
+          type: string
+          format: uri
+        diff_url:
+          type: string
+          format: uri
+        patch_url:
+          type: string
+          format: uri
+        merged_at:
+          type: string
+          format: date-time
+          nullable: true
+    IssueComment:
+      type: object
+      description: Issue comment (simplified to fields referenced in tests).
+      properties:
+        id:
+          type: integer
+          format: int64
+        node_id:
+          type: string
+          description: 'GraphQL node ID. (Verified in: Test #26)'
+        url:
+          type: string
+          format: uri
+          description: 'API URL for this comment. (Verified in: Test #26)'
+        html_url:
+          type: string
+          format: uri
+          description: 'Web URL for this comment. (Verified in: Test #26)'
+        issue_url:
+          type: string
+          format: uri
+          description: 'API URL for the parent issue. (Verified in: Test #26)'
+        reactions:
+          type: object
+          description: 'Reaction summary counts. (Verified in: Test #26)'
+          additionalProperties: true
+        performed_via_github_app:
+          type: object
+          nullable: true
+          description: 'Present when performed via a GitHub App; null when not applicable. (Verified in: Test #26)'
+        body:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        author_association:
+          type: string
+          nullable: true
+          description: 'Observed values include MEMBER, CONTRIBUTOR, NONE. (Verified in: Test #10)'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - body
+        - user
+        - created_at
+        - updated_at
+    UserOrNull:
+      type: object
+      nullable: true
+      description: GitHub user (public profile subset) or null.
+      properties:
+        login:
+          type: string
+        id:
+          type: integer
+          format: int64
+        html_url:
+          type: string
+          format: uri
+        type:
+          type: string
+          nullable: true
+      required:
+        - login
+        - id
+    User:
+      type: object
+      description: GitHub user (public profile subset).
+      properties:
+        login:
+          type: string
+        id:
+          type: integer
+          format: int64
+        html_url:
+          type: string
+          format: uri
+        type:
+          type: string
+          nullable: true
+      required:
+        - login
+        - id
+    Label:
+      type: object
+      description: GitHub label (subset).
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: true
+        name:
+          type: string
+        color:
+          type: string
+          nullable: true
+        default:
+          type: boolean
+          nullable: true
+        description:
+          type: string
+          nullable: true
+      required:
+        - name
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        documentation_url:
+          type: string
+          format: uri
+          nullable: true
+        status:
+          type: string
+          nullable: true
+      required:
+        - message
+    ValidationError:
+      type: object
+      properties:
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorItem'
+        documentation_url:
+          type: string
+          format: uri
+          nullable: true
+        status:
+          type: string
+          nullable: true
+      required:
+        - message
+    ValidationErrorItem:
+      type: object
+      properties:
+        resource:
+          type: string
+          nullable: true
+        field:
+          type: string
+          nullable: true
+        code:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+        value:
+          type: string
+          nullable: true
+  examples:
+    ListIssuesDefault200:
+      summary: List issues (default parameters)
+      description: 'Default list response example.
+
+        Verified in: Test #1'
+      value:
+        - id: 3712764350
+          number: 35340
+          title: 'Bug: Server Components error when directly rendering a Context'
+          state: open
+          state_reason:
+          created_at: '2025-12-09T21:46:08Z'
+          updated_at: '2025-12-09T21:46:08Z'
+          closed_at:
+          user:
+            login: samselikoff
+            id: 2922250
+          labels:
+            - name: 'Status: Unconfirmed'
+          assignee:
+          assignees: []
+          comments: 0
+    GetIssueDefaultMedia200:
+      summary: Get issue (default media type)
+      description: 'Response includes `body` only (no `body_text` or `body_html`).
+
+        Verified in: Test #31'
+      value:
+        id: 14910249
+        number: 1
+        title: Run each test in its own <iframe>
+        state: closed
+        state_reason:
+        created_at: '2013-05-29T20:20:53Z'
+        updated_at: '2025-12-19T20:59:36Z'
+        closed_at: '2013-06-03T17:58:02Z'
+        user:
+          login: benjamn
+          id: 5750
+        labels: []
+        assignee:
+        assignees: []
+        pull_request:
+          url: https://api.github.com/repos/facebook/react/pulls/1
+          html_url: https://github.com/facebook/react/pull/1
+        body: 'This is not blocking the initial launch, so feel free to put it on the back-burner for now.
+
+
+          The Jasmine test harness still runs in the parent window and reports to PhantomJS via `window.callPhantom`, but
+          each test `<iframe>` has its own copy of `react-test.js` and each individual test module is required in the global
+          context of a separate `<iframe>`.
+
+
+          This gives us a significant approximation of the benefits of mocking, at least in terms of isolating tests from
+          one another.
+
+
+          cr @jeffmo @zpao
+
+          '
+        comments: 6
+    GetIssueFullMedia200:
+      summary: Get issue (full media type)
+      description: 'Response includes `body`, `body_text`, and `body_html`.
+
+        Verified in: Test #34'
+      value:
+        id: 14910249
+        number: 1
+        title: Run each test in its own <iframe>
+        state: closed
+        state_reason:
+        created_at: '2013-05-29T20:20:53Z'
+        updated_at: '2025-12-19T20:59:36Z'
+        closed_at: '2013-06-03T17:58:02Z'
+        user:
+          login: benjamn
+          id: 5750
+        labels: []
+        assignee:
+        assignees: []
+        pull_request:
+          url: https://api.github.com/repos/facebook/react/pulls/1
+          html_url: https://github.com/facebook/react/pull/1
+        body: 'This is not blocking the initial launch, so feel free to put it on the back-burner for now.
+
+
+          The Jasmine test harness still runs in the parent window and reports to PhantomJS via `window.callPhantom`, but
+          each test `<iframe>` has its own copy of `react-test.js` and each individual test module is required in the global
+          context of a separate `<iframe>`.
+
+
+          This gives us a significant approximation of the benefits of mocking, at least in terms of isolating tests from
+          one another.
+
+
+          cr @jeffmo @zpao
+
+          '
+        body_text: 'This is not blocking the initial launch, so feel free to put it on the back-burner for now.
+
+          The Jasmine test harness still runs in the parent window and reports to PhantomJS via window.callPhantom, but each
+          test <iframe> has its own copy of react-test.js and each individual test module is required in the global context
+          of a separate <iframe>.
+
+          This gives us a significant approximation of the benefits of mocking, at least in terms of isolating tests from
+          one another.
+
+          cr @jeffmo @zpao'
+        body_html: '<p dir="auto">This is not blocking the initial launch, so feel free to put it on the back-burner for now.</p>
+
+          <p dir="auto">The Jasmine test harness still runs in the parent window and reports to PhantomJS via <code class="notranslate">window.callPhantom</code>,
+          but each test <code class="notranslate">&lt;iframe&gt;</code> has its own copy of <code class="notranslate">react-test.js</code>
+          and each individual test module is required in the global context of a separate <code class="notranslate">&lt;iframe&gt;</code>.</p>
+
+          <p dir="auto">This gives us a significant approximation of the benefits of mocking, at least in terms of isolating
+          tests from one another.</p>
+
+          <p dir="auto">cr <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/jeffmo/hovercard"
+          data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/jeffmo">@jeffmo</a>
+          <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/zpao/hovercard" data-octo-click="hovercard-link-click"
+          data-octo-dimensions="link_type:self" href="https://github.com/zpao">@zpao</a></p>'
+        comments: 6
+    CreateIssueMinimalRequest:
+      summary: Create issue minimal request
+      description: 'Minimal create request.
+
+        Verified in: Test #6'
+      value:
+        title: Test Issue
+    CreateIssueMinimalResponse201:
+      summary: Create issue minimal response
+      description: 'Minimal create response excerpt.
+
+        Verified in: Test #6'
+      value:
+        number: 1
+        title: Test Issue
+        state: open
+        labels: []
+        assignees: []
+        assignee:
+        body:
+        created_at: '2025-12-12T05:42:46Z'
+        updated_at: '2025-12-12T05:42:46Z'
+        state_reason:
+        comments: 0
+    CreateIssueMissingTitle422:
+      summary: Create issue missing title (validation error)
+      description: 'Missing required `title`.
+
+        Verified in: Test #37'
+      value:
+        message: 'Invalid request.
+
+
+          "title" wasn''t supplied.'
+        documentation_url: https://docs.github.com/rest/issues/issues#create-an-issue
+        status: '422'
+    PatchIssueCloseCompletedRequest:
+      summary: Close issue with state_reason=completed (request)
+      description: 'Close an issue and set state_reason to `completed`.
+
+        Verified in: Test #60'
+      value:
+        state: closed
+        state_reason: completed
+    PatchIssueCloseCompletedResponse200:
+      summary: Close issue with state_reason=completed (response)
+      description: 'Response excerpt after closing.
+
+        Verified in: Test #60'
+      value:
+        number: 2
+        state: closed
+        state_reason: completed
+        closed_at: '2026-01-06T22:17:22Z'
+        updated_at: '2026-01-06T22:17:22Z'
+        title: Test Issue - All Fields
+        labels: []
+        assignees: []
+        comments: 2
+        created_at: '2025-12-13T06:20:04Z'
+    PatchIssueInvalidStateReasonTransition422:
+      summary: Invalid state_reason transition (validation error)
+      description: 'state_reason transition validation error.
+
+        Verified in: Test #79'
+      value:
+        message: Validation Failed
+        documentation_url: https://docs.github.com/rest/issues/issues#update-an-issue
+        status: '422'
+        errors:
+          - resource: Issue
+            code: custom
+            field: state_reason
+            message: state_reason Cannot transition to this state
+    PatchIssueForbidden403:
+      summary: Update issue without permission (forbidden)
+      description: 'Caller lacks permission to update.
+
+        Verified in: Test #67'
+      value:
+        message: Must have admin rights to Repository.
+        documentation_url: https://docs.github.com/rest/issues/issues#update-an-issue
+        status: '403'
+    CreateCommentRequest:
+      summary: Create comment request
+      description: 'Basic create-comment request.
+
+        Verified in: Test #26'
+      value:
+        body: This is a test comment created via API.
+    CreateCommentResponse201:
+      summary: Create comment response
+      description: 'Basic create-comment response excerpt.
+
+        Verified in: Test #26'
+      value:
+        id: 3673471450
+        body: This is a test comment created via API.
+        created_at: '2025-12-19T04:51:40Z'
+        updated_at: '2025-12-19T04:51:40Z'
+        url: https://api.github.com/repos/derrickscottux-collab/github-api-testing/issues/comments/3673471450
+        html_url: https://github.com/derrickscottux-collab/github-api-testing/issues/2#issuecomment-3673471450
+        issue_url: https://api.github.com/repos/derrickscottux-collab/github-api-testing/issues/2
+        user:
+          login: derrickscottux-collab
+          id: 243489198
+    UpdateIssueClearLabelsEmptyArrayRequest:
+      summary: Clear labels with an empty array
+      description: 'Sends an empty labels array to clear all labels.
+
+
+        Verified in: Test #75'
+      value:
+        labels: []
+    UpdateIssueClearLabelsEmptyArrayResponse:
+      summary: Clear labels response (labels become empty)
+      description: 'Response after clearing labels.
+
+
+        Verified in: Test #75'
+      value:
+        number: 2
+        state: open
+        labels: []
+        assignee:
+        assignees: []
+        updated_at: '2026-01-06T22:07:42Z'
+        state_reason:
+        title: Test Issue - All Fields
+        comments: 2
+        created_at: '2025-12-13T06:20:04Z'
+    UpdateIssueClearAssigneesEmptyArrayRequest:
+      summary: Clear assignees with an empty array
+      description: 'Sends an empty assignees array to clear all assignees.
+
+
+        Verified in: Test #76'
+      value:
+        assignees: []
+    UpdateIssueClearAssigneesEmptyArrayResponse:
+      summary: Clear assignees response (assignees empty, assignee null)
+      description: 'Response after clearing assignees.
+
+
+        Verified in: Test #76'
+      value:
+        number: 2
+        state: open
+        labels:
+          - name: bug
+          - name: documentation
+        assignee:
+        assignees: []
+        updated_at: '2026-01-06T21:53:13Z'
+        state_reason:
+        title: Test Issue - All Fields
+        comments: 2
+        created_at: '2025-12-13T06:20:04Z'
+    ListIssuesInvalidSortFallbackResponse:
+      summary: Invalid sort falls back to default (created)
+      description: 'Example response when an invalid sort value is provided (GitHub falls back to default sort).
+
+
+        Verified in: Test #77'
+      value:
+        - number: 4
+          title: Test Empty Labels
+          created_at: '2026-01-06T21:17:05Z'
+          updated_at: '2026-01-06T21:17:05Z'
+          labels: []
+          assignee:
+          assignees: []
+          body:
+          state: open
+          comments: 0
+        - number: 3
+          title: Test Empty Labels
+          created_at: '2026-01-06T21:05:31Z'
+          updated_at: '2026-01-06T21:05:31Z'
+          labels: []
+          assignee:
+          assignees: []
+          body:
+          state: open
+          comments: 0
+        - number: 2
+          title: Test Issue - All Fields
+          created_at: '2025-12-13T06:20:04Z'
+          updated_at: '2026-01-06T21:53:13Z'
+          labels:
+            - name: bug
+            - name: documentation
+          assignee:
+          assignees: []
+          body: 'This is a test issue created via API.
+
+
+            ## Testing
+
+            - Markdown support
+
+            - Multiple lines'
+          state: open
+          comments: 2
+externalDocs:
+  description: GitHub REST API documentation (official).
+  url: https://docs.github.com/rest

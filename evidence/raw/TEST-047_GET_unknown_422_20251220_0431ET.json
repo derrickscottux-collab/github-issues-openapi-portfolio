@@ -1,0 +1,52 @@
+{
+  "source": "postman_saved_example",
+  "collection": {
+    "name": "Github Issues API",
+    "postman_id": "87da17a2-7498-4c98-a419-04b7724e165e"
+  },
+  "item_path": "Edge Cases & Boundaries/TEST #47: Very High Page Number",
+  "request": {
+    "name": "TEST #47: Very High Page Number",
+    "method": "GET",
+    "raw_url": "",
+    "path_template": ""
+  },
+  "response": {
+    "name": "TEST-47_Edge-page-9999_200",
+    "status": "Unprocessable Entity",
+    "code": 422,
+    "headers": {
+      "Date": "Sat, 20 Dec 2025 09:31:14 GMT",
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Length": "238",
+      "X-OAuth-Scopes": "repo",
+      "X-Accepted-OAuth-Scopes": "repo",
+      "github-authentication-token-expiration": "2026-01-09 06:19:21 UTC",
+      "X-GitHub-Media-Type": "github.v3; format=json",
+      "x-github-api-version-selected": "2022-11-28",
+      "Access-Control-Expose-Headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+      "Access-Control-Allow-Origin": "*",
+      "Strict-Transport-Security": "max-age=31536000; includeSubdomains; preload",
+      "X-Frame-Options": "deny",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "0",
+      "Referrer-Policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+      "Content-Security-Policy": "default-src 'none'",
+      "Vary": "Accept-Encoding, Accept, X-Requested-With",
+      "X-GitHub-Request-Id": "F64D:9F5B6:1CCA842:7E48392:69466CE2",
+      "Server": "github.com",
+      "X-RateLimit-Limit": "5000",
+      "X-RateLimit-Remaining": "4994",
+      "X-RateLimit-Reset": "1766226050",
+      "X-RateLimit-Used": "6",
+      "X-RateLimit-Resource": "core"
+    },
+    "date_utc": "2025-12-20T09:31:14+00:00",
+    "date_et": "2025-12-20T04:31:14-05:00",
+    "body": {
+      "message": "Pagination with the page parameter is not supported for large datasets, please use cursor based pagination (after/before)",
+      "documentation_url": "https://docs.github.com/rest/issues/issues#list-repository-issues",
+      "status": "422"
+    }
+  }
+}

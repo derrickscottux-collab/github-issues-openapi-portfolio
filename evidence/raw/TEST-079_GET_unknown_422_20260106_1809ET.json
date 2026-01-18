@@ -1,0 +1,60 @@
+{
+  "source": "postman_saved_example",
+  "collection": {
+    "name": "Github Issues API",
+    "postman_id": "87da17a2-7498-4c98-a419-04b7724e165e"
+  },
+  "item_path": "Comment Verification Tests/TEST #79: PATCH Issue With state_reason=reopened (Validation Check)",
+  "request": {
+    "name": "TEST #79: PATCH Issue With state_reason=reopened (Validation Check)",
+    "method": "GET",
+    "raw_url": "",
+    "path_template": ""
+  },
+  "response": {
+    "name": "UpdateIssue_StateReasonReopened_InvalidTransition_422",
+    "status": "Unprocessable Entity",
+    "code": 422,
+    "headers": {
+      "Date": "Tue, 06 Jan 2026 23:09:25 GMT",
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Length": "255",
+      "X-OAuth-Scopes": "repo",
+      "X-Accepted-OAuth-Scopes": "",
+      "github-authentication-token-expiration": "2026-01-09 06:19:21 UTC",
+      "X-GitHub-Media-Type": "github.v3; format=json",
+      "x-github-api-version-selected": "2022-11-28",
+      "Access-Control-Expose-Headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+      "Access-Control-Allow-Origin": "*",
+      "Strict-Transport-Security": "max-age=31536000; includeSubdomains; preload",
+      "X-Frame-Options": "deny",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "0",
+      "Referrer-Policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+      "Content-Security-Policy": "default-src 'none'",
+      "Vary": "Accept-Encoding, Accept, X-Requested-With",
+      "X-GitHub-Request-Id": "7697:34B9DC:68D5D2:1CE3E21:695D9625",
+      "Server": "github.com",
+      "X-RateLimit-Limit": "5000",
+      "X-RateLimit-Remaining": "4999",
+      "X-RateLimit-Reset": "1767744565",
+      "X-RateLimit-Used": "1",
+      "X-RateLimit-Resource": "core"
+    },
+    "date_utc": "2026-01-06T23:09:25+00:00",
+    "date_et": "2026-01-06T18:09:25-05:00",
+    "body": {
+      "message": "Validation Failed",
+      "errors": [
+        {
+          "resource": "Issue",
+          "code": "custom",
+          "field": "state_reason",
+          "message": "state_reason Cannot transition to this state"
+        }
+      ],
+      "documentation_url": "https://docs.github.com/rest/issues/issues#update-an-issue",
+      "status": "422"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "source": "postman_saved_example",
+  "collection": {
+    "name": "Github Issues API",
+    "postman_id": "87da17a2-7498-4c98-a419-04b7724e165e"
+  },
+  "item_path": "Error Handling/TEST #36: Non-existent Repository (404)",
+  "request": {
+    "name": "TEST #36: Non-existent Repository (404)",
+    "method": "GET",
+    "raw_url": "{{baseUrl}}/repos/{{test_owner}}/nonexistentrepo123456/issues/",
+    "path_template": "/repos/{owner}/nonexistentrepo123456/issues/"
+  },
+  "response": {
+    "name": "TEST-36_Error-nonexistent-repo_404",
+    "status": "Not Found",
+    "code": 404,
+    "headers": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-GitHub-Media-Type": "github.v3; format=json",
+      "Access-Control-Expose-Headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+      "Access-Control-Allow-Origin": "*",
+      "Strict-Transport-Security": "max-age=31536000; includeSubdomains; preload",
+      "X-Frame-Options": "deny",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "0",
+      "Referrer-Policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+      "Content-Security-Policy": "default-src 'none'",
+      "Vary": "Accept-Encoding, Accept, X-Requested-With",
+      "Server": "github.com",
+      "X-GitHub-Request-Id": "C7A5:EA0C9:1754D28:664C346:694660A6",
+      "Date": "Sat, 20 Dec 2025 08:39:02 GMT",
+      "connection": "close"
+    },
+    "date_utc": "2025-12-20T08:39:02+00:00",
+    "date_et": "2025-12-20T03:39:02-05:00",
+    "body": {
+      "message": "Not Found",
+      "documentation_url": "https://docs.github.com/rest",
+      "status": "404"
+    }
+  }
+}
