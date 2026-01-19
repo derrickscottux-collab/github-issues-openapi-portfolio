@@ -1,10 +1,13 @@
-# GitHub Issues REST API Portfolio - Evidence-Based OpenAPI 3.0.3
+# GitHub Issues REST API Portfolio (Evidence-Based OpenAPI 3.0.3)
 
 Evidence-based OpenAPI 3.0.3 specification for a tested subset of the GitHub Issues REST API.
-Every non-trivial behavior claim is backed by a Postman test and saved request/response evidence.
+Every non-trivial behavior claim is backed by a Postman test and saved request/response evidence (ET timestamps in filenames).
 
 - Base URL: `https://api.github.com`
 - Spec file: `openapi/openapi.yaml`
+- Redocly config: `openapi/redocly.yaml`
+
+![Rendered API docs](assets/rendered-docs.png)
 
 ## Live docs
 
@@ -45,7 +48,7 @@ Meaning:
 ### Where to find the proof
 
 - Test suite: `tests/github_api_test_suite.md`
-- Evidence indexes and maps:
+- Evidence package:
   - `evidence/README.md`
   - `evidence/EVIDENCE_MATRIX.md`
   - `evidence/TRACEABILITY_MAP.md`
@@ -67,8 +70,12 @@ From repo root:
 npx @redocly/cli@latest lint openapi/openapi.yaml --config openapi/redocly.yaml
 ```
 
-Notes:
-- This repo includes `.redocly.lint-ignore.yaml` for any remaining known linter edge cases.
+![Redocly lint output](assets/lint-pass.png)
+
+### Note on ambiguous paths
+
+GitHub’s Issues API includes endpoints that some linters treat as ambiguous due to overlapping route templates (for example, the issue comments routes).
+For this portfolio repo, the Redocly `no-ambiguous-paths` rule is disabled in `openapi/redocly.yaml` to avoid a known false-positive warning while keeping the spec OpenAPI 3.0.3 compliant and stable.
 
 ## Render docs locally (HTML)
 
@@ -114,4 +121,4 @@ If GitHub Pages tries to process it as Jekyll, add an empty file:
 ## Disclaimer
 
 This is an independent portfolio project and is not an official GitHub specification.
-For full coverage, refer to GitHub's official REST API documentation.
+For full coverage, refer to GitHub’s official REST API documentation.

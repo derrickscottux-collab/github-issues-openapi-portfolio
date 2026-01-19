@@ -2,4 +2,4 @@ extends:
   - recommended
 
 rules:
-  no-ambiguous-paths: warn
+  no-ambiguous-paths: off
