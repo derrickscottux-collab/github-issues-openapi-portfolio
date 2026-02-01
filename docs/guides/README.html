@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guides</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
+    main { max-width: 920px; margin: 0 auto; padding: 28px 18px 60px; line-height: 1.6; }
+    pre { overflow:auto; padding: 12px; background: #0b1220; color: #e6edf3; border-radius: 10px; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    a { color: inherit; }
+    .top { margin-bottom: 18px; }
+    .top a { text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="top"><a href="./">← Back to Guides</a></div>
+    <h1>Guides</h1>
+<p><strong>Audience:</strong> Developers integrating with the GitHub Issues REST API (portfolio subset)</p>
+<p><strong>Scope:</strong> Task-based documentation that complements the rendered OpenAPI reference docs. These guides are designed to be readable on GitHub and easy to link from a docs site.</p>
+<h2>Start here</h2>
+<ul>
+<li><strong>Quickstart:</strong> <a href="quickstart.md"><code>quickstart.md</code></a></li>
+<li><strong>Pagination and Filtering:</strong> <a href="pagination-and-filters.md"><code>pagination-and-filters.md</code></a></li>
+<li><strong>Errors and Troubleshooting:</strong> <a href="errors-and-troubleshooting.md"><code>errors-and-troubleshooting.md</code></a></li>
+<li><strong>Support checklist:</strong> <a href="support-checklist.md"><code>support-checklist.md</code></a></li>
+<li><strong>Glossary:</strong> <a href="glossary.md"><code>glossary.md</code></a></li>
+</ul>
+<h2>What these guides add (beyond the OpenAPI spec)</h2>
+<ul>
+<li>Fast onboarding path (quickstart)</li>
+<li>Evidence-backed notes on defaults, caps, and invalid inputs</li>
+<li>Troubleshooting patterns with saved examples</li>
+<li>A reproducible support/reporting checklist</li>
+</ul>
+<h2>Known limitations (by design)</h2>
+<ul>
+<li>This is <strong>not</strong> a full GitHub REST API specification. It covers only endpoints and behaviors verified in the included test suite and evidence artifacts.</li>
+<li>Evidence reflects observations during <strong>2025-12-10 to 2026-01-06 (ET)</strong>; GitHub behavior may change over time.</li>
+<li>Authentication is documented at a practical level (Bearer token), but token scope and org policy outcomes are environment-specific.</li>
+<li>Rate limiting is referenced via headers, but rate-limit behavior is not exhaustively tested in this portfolio scope.</li>
+</ul>
+<hr>
+<h2>Related links</h2>
+<ul>
+<li>Guide index: <a href="README.md"><code>guides/README.md</code></a></li>
+<li>Glossary: <a href="glossary.md"><code>guides/glossary.md</code></a></li>
+<li>OpenAPI spec: <a href="../openapi/openapi.yaml"><code>openapi/openapi.yaml</code></a></li>
+<li>Rendered reference docs (GitHub Pages): <a href="https://derrickscottux-collab.github.io/github-issues-openapi-portfolio">https://derrickscottux-collab.github.io/github-issues-openapi-portfolio</a></li>
+<li>Test suite: <a href="../tests/github_api_test_suite.md"><code>tests/github_api_test_suite.md</code></a></li>
+<li>Evidence package: <a href="../evidence/README.md"><code>evidence/README.md</code></a></li>
+<li>Evidence matrix: <a href="../evidence/EVIDENCE_MATRIX.md"><code>evidence/EVIDENCE_MATRIX.md</code></a></li>
+<li>Traceability map: <a href="../evidence/TRACEABILITY_MAP.md"><code>evidence/TRACEABILITY_MAP.md</code></a></li>
+<li>Evidence manifest: <a href="../evidence/manifest.json"><code>evidence/manifest.json</code></a></li>
+</ul>
+
+  </main>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Pagination and Filtering · Guides</title>
+  <link rel="stylesheet" href="./guides.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbarInner">
+      <a class="brand" href="https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/index.html">
+        <span class="brandMark" aria-hidden="true"></span>
+        <span>GitHub Issues API Docs</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/">Reference</a>
+        <a href="https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/index.html">Guides</a>
+        <a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio" target="_blank" rel="noreferrer">Repo</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="headerCard">
+      <p class="kicker">Portfolio guides</p>
+      <div class="h1">Pagination and Filtering</div>
+      <p class="sub">Task-focused guides that complement the OpenAPI reference docs (Redoc).</p>
+    </section>
+
+    <div class="layout">
+      <aside class="toc" aria-label="Navigation">
+        <div class="tocTitle">On this page</div>
+        <div>
+          <a class="tocItem" href="#pagination-parameters">Pagination parameters</a>
+<a class="tocItem" href="#observed-defaults-and-limits-verified">Observed defaults and limits (verified)</a>
+<a class="tocItem" href="#examples">Examples</a>
+<a class="tocItem tocItemSub" href="#get-10-issues">Get 10 issues</a>
+<a class="tocItem tocItemSub" href="#get-page-2-with-5-per-page">Get page 2 with 5 per page</a>
+<a class="tocItem" href="#sorting-and-direction">Sorting and direction</a>
+<a class="tocItem tocItemSub" href="#gotcha-invalid-sort-can-be-silently-ignored">Gotcha: invalid `sort` can be silently ignored</a>
+<a class="tocItem tocItemSub" href="#gotcha-direction-may-be-ignored-when-sort-is-invalid">Gotcha: `direction` may be ignored when `sort` is invalid</a>
+<a class="tocItem" href="#related-links">Related links</a>
+        </div>
+        <div class="tocSection">
+    <div class="tocTitle">Guides</div>
+    <a class="tocItem" href="./index.html" title="Guides home">Guides home</a>
+    <a class="tocItem" href="./quickstart.html" title="Quickstart">Quickstart</a>
+<a class="tocItem" href="./errors-and-troubleshooting.html" title="Errors and Troubleshooting">Errors and Troubleshooting</a>
+<a class="tocItem" href="./support-checklist.html" title="Support checklist">Support checklist</a>
+<a class="tocItem" href="./glossary.html" title="Glossary">Glossary</a>
+  </div>
+      </aside>
+
+      <main class="content">
+        <h1 id="pagination-and-filtering">Pagination and Filtering</h1><p>Audience: Developers integrating with the GitHub Issues REST API (portfolio subset)</p>
+<p>Scope: Observed pagination and query-parameter behavior for <code>GET /repos/{{owner}}/{{repo}}/issues</code>, backed by saved request/response evidence.</p>
+<p>This guide documents behavior that can be easy to get wrong if you only read generic reference docs: defaults, max limits, and what happens when inputs are invalid.</p>
+<h2 id="pagination-parameters">Pagination parameters<a class="hlink" href="#pagination-parameters" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><ul>
+<li><code>per_page</code>: number of results per page</li>
+<li><code>page</code>: which page of results to return</li>
+</ul>
+<h2 id="observed-defaults-and-limits-verified">Observed defaults and limits (verified)<a class="hlink" href="#observed-defaults-and-limits-verified" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><ul>
+<li>Default <code>per_page</code> is <strong>30</strong> when omitted<ul>
+<li>Evidence: <code>TEST-001_GET_repos_owner_repo_issues_200_20251210_0214ET.json</code></li>
+</ul>
+</li>
+<li><code>per_page=10</code> returns <strong>10</strong> results<ul>
+<li>Evidence: <code>TEST-011_GET_repos_owner_repo_issues_per_page_10_200_20251214_2039ET.json</code></li>
+</ul>
+</li>
+<li>Max <code>per_page</code> is <strong>100</strong><ul>
+<li>Evidence: <code>TEST-013_GET_repos_owner_repo_issues_per_page_100_200_20251214_2051ET.json</code></li>
+</ul>
+</li>
+<li>If <code>per_page</code> is above max (example <code>150</code>), results cap at <strong>100</strong><ul>
+<li>Evidence: <code>TEST-V2_GET_repos_owner_repo_issues_per_page_150_200_20260112_1539ET.json</code></li>
+</ul>
+</li>
+<li>If <code>per_page=0</code>, results fall back to <strong>30</strong><ul>
+<li>Evidence: <code>TEST-V3_GET_repos_owner_repo_issues_per_page_0_200_20260112_1539ET.json</code></li>
+</ul>
+</li>
+<li>If <code>per_page</code> is negative (example <code>-5</code>), results fall back to <strong>30</strong><ul>
+<li>Evidence: <code>TEST-V4_GET_repos_owner_repo_issues_per_page_-5_200_20260112_1539ET.json</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="examples">Examples<a class="hlink" href="#examples" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><h3 id="get-10-issues">Get 10 issues<a class="hlink" href="#get-10-issues" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h3><p><code>GET /repos/{owner}/{repo}/issues?per_page=10</code></p>
+<h3 id="get-page-2-with-5-per-page">Get page 2 with 5 per page<a class="hlink" href="#get-page-2-with-5-per-page" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h3><p><code>GET /repos/{owner}/{repo}/issues?per_page=5&amp;page=2</code></p>
+<p>Verified evidence:</p>
+<ul>
+<li><code>TEST-045_GET_repos_owner_repo_issues_per_page_5_page_2_200_20260106_1945ET.json</code></li>
+</ul>
+<h2 id="sorting-and-direction">Sorting and direction<a class="hlink" href="#sorting-and-direction" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><p>The list issues endpoint supports <code>sort</code> and <code>direction</code>. Two verified behaviors are worth calling out:</p>
+<h3 id="gotcha-invalid-sort-can-be-silently-ignored">Gotcha: invalid <code>sort</code> can be silently ignored<a class="hlink" href="#gotcha-invalid-sort-can-be-silently-ignored" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h3><p>If <code>sort</code> is invalid, the request may still return <code>200 OK</code> and fall back to the default sort behavior.</p>
+<ul>
+<li>Evidence: <code>TEST-042_GET_repos_owner_repo_issues_sort_invalid_200_20260106_1945ET.json</code></li>
+</ul>
+<h3 id="gotcha-direction-may-be-ignored-when-sort-is-invalid">Gotcha: <code>direction</code> may be ignored when <code>sort</code> is invalid<a class="hlink" href="#gotcha-direction-may-be-ignored-when-sort-is-invalid" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h3><p>When <code>sort</code> is invalid, <code>direction</code> may not change ordering as expected.</p>
+<ul>
+<li>Evidence: <code>TEST-V1_GET_repos_owner_repo_issues_sort_invalid_direction_asc_200_20260112_1539ET.json</code></li>
+</ul>
+<hr>
+<h2 id="related-links">Related links<a class="hlink" href="#related-links" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><ul>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/tree/main/guides">Guide index</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/guides/glossary.md">Glossary</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/openapi/openapi.yaml">OpenAPI spec</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/tests/github_api_test_suite.md">Test suite</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/README.md">Evidence package</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/EVIDENCE_MATRIX.md">Evidence matrix</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/TRACEABILITY_MAP.md">Traceability map</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/manifest.json">Evidence manifest</a></li>
+</ul>
+
+        <nav class="pager" aria-label="Guide navigation"><a href="./quickstart.html" title="Quickstart">← Quickstart</a><a href="./errors-and-troubleshooting.html" title="Errors and Troubleshooting">Errors and Troubleshooting →</a></nav>
+        <div class="foot">Generated from <code>guides/</code> into <code>docs\guides/</code>.</div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

@@ -83,13 +83,12 @@ For details and fixes, see: **Errors and Troubleshooting**.
 ---
 
 ## Related links
+- [Guide index](https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/tree/main/guides)
+- [Glossary](https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/guides/glossary.md)
+- [OpenAPI spec](https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/openapi/openapi.yaml)
+- [Test suite](https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/tests/github_api_test_suite.md)
+- [Evidence package](https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/README.md)
+- [Evidence matrix](https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/EVIDENCE_MATRIX.md)
+- [Traceability map](https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/TRACEABILITY_MAP.md)
+- [Evidence manifest](https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/manifest.json)
 
-- Guide index: [`guides/README.md`](README.md)
-- Glossary: [`guides/glossary.md`](glossary.md)
-- OpenAPI spec: [`openapi/openapi.yaml`](../openapi/openapi.yaml)
-- Rendered reference docs (GitHub Pages): https://derrickscottux-collab.github.io/github-issues-openapi-portfolio
-- Test suite: [`tests/github_api_test_suite.md`](../tests/github_api_test_suite.md)
-- Evidence package: [`evidence/README.md`](../evidence/README.md)
-- Evidence matrix: [`evidence/EVIDENCE_MATRIX.md`](../evidence/EVIDENCE_MATRIX.md)
-- Traceability map: [`evidence/TRACEABILITY_MAP.md`](../evidence/TRACEABILITY_MAP.md)
-- Evidence manifest: [`evidence/manifest.json`](../evidence/manifest.json)

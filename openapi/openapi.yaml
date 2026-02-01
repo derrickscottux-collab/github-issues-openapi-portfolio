@@ -18,7 +18,13 @@ info:
     Evidence approach:
 
     - Non-trivial behavioral claims include a "Verified in: Test #X" line that maps to the Postman test suite and evidence
-    packets.'
+    packets.
+    
+    Official GitHub REST docs:
+    
+    - https://docs.github.com/rest'
+    
+    
 servers:
   - url: https://api.github.com
     description: GitHub REST API
@@ -1693,5 +1699,5 @@ components:
           state: open
           comments: 2
 externalDocs:
-  description: GitHub REST API documentation (official).
-  url: https://docs.github.com/rest
+  description: Guides (Quickstart, pagination, troubleshooting)
+  url: https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/

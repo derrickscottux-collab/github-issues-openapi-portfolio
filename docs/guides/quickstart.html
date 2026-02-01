@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Quickstart · Guides</title>
+  <link rel="stylesheet" href="./guides.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbarInner">
+      <a class="brand" href="https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/index.html">
+        <span class="brandMark" aria-hidden="true"></span>
+        <span>GitHub Issues API Docs</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/">Reference</a>
+        <a href="https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/index.html">Guides</a>
+        <a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio" target="_blank" rel="noreferrer">Repo</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="headerCard">
+      <p class="kicker">Portfolio guides</p>
+      <div class="h1">Quickstart</div>
+      <p class="sub">Task-focused guides that complement the OpenAPI reference docs (Redoc).</p>
+    </section>
+
+    <div class="layout">
+      <aside class="toc" aria-label="Navigation">
+        <div class="tocTitle">On this page</div>
+        <div>
+          <a class="tocItem" href="#requirements">Requirements</a>
+<a class="tocItem" href="#base-url">Base URL</a>
+<a class="tocItem" href="#recommended-headers">Recommended headers</a>
+<a class="tocItem" href="#step-1-list-issues-read-only-public">Step 1: List issues (read-only, public)</a>
+<a class="tocItem" href="#step-2-limit-results-pagination">Step 2: Limit results (pagination)</a>
+<a class="tocItem" href="#step-3-create-an-issue-write-operation">Step 3: Create an issue (write operation)</a>
+<a class="tocItem" href="#common-failure-cases-fast-check">Common failure cases (fast check)</a>
+<a class="tocItem" href="#related-links">Related links</a>
+        </div>
+        <div class="tocSection">
+    <div class="tocTitle">Guides</div>
+    <a class="tocItem" href="./index.html" title="Guides home">Guides home</a>
+    <a class="tocItem" href="./pagination-and-filters.html" title="Pagination and Filtering">Pagination and Filtering</a>
+<a class="tocItem" href="./errors-and-troubleshooting.html" title="Errors and Troubleshooting">Errors and Troubleshooting</a>
+<a class="tocItem" href="./support-checklist.html" title="Support checklist">Support checklist</a>
+<a class="tocItem" href="./glossary.html" title="Glossary">Glossary</a>
+  </div>
+      </aside>
+
+      <main class="content">
+        <h1 id="quickstart">Quickstart</h1><p>Audience: Developers integrating with the GitHub Issues REST API (portfolio subset)</p>
+<p>Scope: This repo documents only the endpoints and behaviors verified by the included tests and evidence (ET timestamps in filenames).</p>
+<p>This guide gets you to a successful request quickly, then points you to the deeper behavior notes (pagination, filters) and troubleshooting.</p>
+<h2 id="requirements">Requirements<a class="hlink" href="#requirements" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><ul>
+<li>A GitHub Personal Access Token (recommended for rate limits and write operations)</li>
+<li>An HTTP client (curl, Postman, or similar)</li>
+</ul>
+<h2 id="base-url">Base URL<a class="hlink" href="#base-url" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><p><code>https://api.github.com</code></p>
+<h2 id="recommended-headers">Recommended headers<a class="hlink" href="#recommended-headers" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><ul>
+<li><code>Accept: application/vnd.github+json</code></li>
+<li><code>X-GitHub-Api-Version: 2022-11-28</code></li>
+<li><code>Authorization: Bearer &lt;YOUR_TOKEN&gt;</code> (recommended)</li>
+</ul>
+<h2 id="step-1-list-issues-read-only-public">Step 1: List issues (read-only, public)<a class="hlink" href="#step-1-list-issues-read-only-public" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><p><strong>Endpoint:</strong> <code>GET /repos/{owner}/{repo}/issues</code></p>
+<p><strong>Example (public repo):</strong></p>
+<pre><code class="language-bash">curl -s \
+  -H &quot;Accept: application/vnd.github+json&quot; \
+  -H &quot;X-GitHub-Api-Version: 2022-11-28&quot; \
+  -H &quot;Authorization: Bearer &lt;YOUR_TOKEN&gt;&quot; \
+  &quot;https://api.github.com/repos/facebook/react/issues&quot;
+</code></pre>
+<p><strong>What to expect</strong></p>
+<ul>
+<li>Status: <code>200 OK</code></li>
+<li>Body: an array of issues (may include pull requests)</li>
+<li>Default behavior (verified):<ul>
+<li><code>state</code> defaults to <code>open</code> when omitted (see evidence: <code>TEST-001...json</code>)</li>
+<li><code>per_page</code> defaults to <code>30</code> when omitted</li>
+</ul>
+</li>
+</ul>
+<h2 id="step-2-limit-results-pagination">Step 2: Limit results (pagination)<a class="hlink" href="#step-2-limit-results-pagination" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><p><strong>Example: get 10 results</strong></p>
+<pre><code class="language-bash">curl -s \
+  -H &quot;Accept: application/vnd.github+json&quot; \
+  -H &quot;X-GitHub-Api-Version: 2022-11-28&quot; \
+  -H &quot;Authorization: Bearer &lt;YOUR_TOKEN&gt;&quot; \
+  &quot;https://api.github.com/repos/facebook/react/issues?per_page=10&quot;
+</code></pre>
+<p>Verified evidence:  </p>
+<ul>
+<li><code>evidence/raw/TEST-011_GET_repos_owner_repo_issues_per_page_10_200_20251214_2039ET.json</code></li>
+</ul>
+<p>See the full pagination notes in: <strong>Pagination and Filtering</strong>.</p>
+<h2 id="step-3-create-an-issue-write-operation">Step 3: Create an issue (write operation)<a class="hlink" href="#step-3-create-an-issue-write-operation" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><p><strong>Endpoint:</strong> <code>POST /repos/{owner}/{repo}/issues</code></p>
+<p>This is only in-scope for the repo you used for testing (see test suite). If you omit authentication, the API returns <code>401</code>.</p>
+<p>Verified evidence:</p>
+<ul>
+<li>Missing auth → <code>401 Unauthorized</code>: <code>evidence/raw/TEST-037A_POST_repos_owner_repo_issues_401_20251220_0346ET.json</code></li>
+</ul>
+<p>Minimal JSON body:</p>
+<pre><code class="language-json">{&quot;title&quot;:&quot;Example issue from docs&quot;,&quot;body&quot;:&quot;Created while validating the portfolio docs.&quot;}
+</code></pre>
+<h2 id="common-failure-cases-fast-check">Common failure cases (fast check)<a class="hlink" href="#common-failure-cases-fast-check" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><ul>
+<li><strong>401 Unauthorized</strong>: missing/invalid token</li>
+<li><strong>404 Not Found</strong>: wrong owner/repo, or private repo without access</li>
+<li><strong>422 Unprocessable Entity</strong>: invalid payload (example: missing <code>title</code>)</li>
+</ul>
+<p>For details and fixes, see: <strong>Errors and Troubleshooting</strong>.</p>
+<hr>
+<h2 id="related-links">Related links<a class="hlink" href="#related-links" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><ul>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/tree/main/guides">Guide index</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/guides/glossary.md">Glossary</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/openapi/openapi.yaml">OpenAPI spec</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/tests/github_api_test_suite.md">Test suite</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/README.md">Evidence package</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/EVIDENCE_MATRIX.md">Evidence matrix</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/TRACEABILITY_MAP.md">Traceability map</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/manifest.json">Evidence manifest</a></li>
+</ul>
+
+        <nav class="pager" aria-label="Guide navigation"><a href="./index.html" title="Guides home">← Guides home</a><a href="./pagination-and-filters.html" title="Pagination and Filtering">Pagination and Filtering →</a></nav>
+        <div class="foot">Generated from <code>guides/</code> into <code>docs\guides/</code>.</div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

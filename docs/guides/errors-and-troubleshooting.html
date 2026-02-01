@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Errors and Troubleshooting · Guides</title>
+  <link rel="stylesheet" href="./guides.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbarInner">
+      <a class="brand" href="https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/index.html">
+        <span class="brandMark" aria-hidden="true"></span>
+        <span>GitHub Issues API Docs</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/">Reference</a>
+        <a href="https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/index.html">Guides</a>
+        <a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio" target="_blank" rel="noreferrer">Repo</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="headerCard">
+      <p class="kicker">Portfolio guides</p>
+      <div class="h1">Errors and Troubleshooting</div>
+      <p class="sub">Task-focused guides that complement the OpenAPI reference docs (Redoc).</p>
+    </section>
+
+    <div class="layout">
+      <aside class="toc" aria-label="Navigation">
+        <div class="tocTitle">On this page</div>
+        <div>
+          <a class="tocItem" href="#quick-diagnosis-table">Quick diagnosis table</a>
+<a class="tocItem" href="#401-example-create-issue-without-authentication">401 example: create issue without authentication</a>
+<a class="tocItem" href="#422-example-missing-title-when-creating-an-issue">422 example: missing title when creating an issue</a>
+<a class="tocItem" href="#when-to-use-the-evidence-artifacts">When to use the evidence artifacts</a>
+<a class="tocItem" href="#related-links">Related links</a>
+        </div>
+        <div class="tocSection">
+    <div class="tocTitle">Guides</div>
+    <a class="tocItem" href="./index.html" title="Guides home">Guides home</a>
+    <a class="tocItem" href="./quickstart.html" title="Quickstart">Quickstart</a>
+<a class="tocItem" href="./pagination-and-filters.html" title="Pagination and Filtering">Pagination and Filtering</a>
+<a class="tocItem" href="./support-checklist.html" title="Support checklist">Support checklist</a>
+<a class="tocItem" href="./glossary.html" title="Glossary">Glossary</a>
+  </div>
+      </aside>
+
+      <main class="content">
+        <h1 id="errors-and-troubleshooting">Errors and Troubleshooting</h1><p>Audience: Developers integrating with the GitHub Issues REST API (portfolio subset)</p>
+<p>Scope: Troubleshooting guidance for common failure modes observed in the tested scope. All examples are backed by saved evidence artifacts.</p>
+<h2 id="quick-diagnosis-table">Quick diagnosis table<a class="hlink" href="#quick-diagnosis-table" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>What to do</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>401 Unauthorized</code></td>
+<td>Missing or invalid <code>Authorization</code> header</td>
+<td>Add <code>Authorization: Bearer &lt;token&gt;</code></td>
+<td><code>TEST-037A...401...json</code></td>
+</tr>
+<tr>
+<td><code>404 Not Found</code></td>
+<td>Wrong owner/repo, or you lack access to a private repo</td>
+<td>Verify spelling and access</td>
+<td>(environment-dependent)</td>
+</tr>
+<tr>
+<td><code>422 Unprocessable Entity</code></td>
+<td>Validation error in request body</td>
+<td>Fix required fields and payload format</td>
+<td><code>TEST-037...422...json</code></td>
+</tr>
+</tbody></table>
+<h2 id="401-example-create-issue-without-authentication">401 example: create issue without authentication<a class="hlink" href="#401-example-create-issue-without-authentication" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><p><strong>Observed response</strong></p>
+<ul>
+<li>Status: <code>401 Unauthorized</code></li>
+<li>Message indicates authentication is required</li>
+</ul>
+<p>Evidence:</p>
+<ul>
+<li><code>evidence/raw/TEST-037A_POST_repos_owner_repo_issues_401_20251220_0346ET.json</code></li>
+</ul>
+<p><strong>Fix</strong></p>
+<ul>
+<li>Include <code>Authorization: Bearer &lt;token&gt;</code> and ensure the token has access to the repo.</li>
+</ul>
+<h2 id="422-example-missing-title-when-creating-an-issue">422 example: missing title when creating an issue<a class="hlink" href="#422-example-missing-title-when-creating-an-issue" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><p><strong>Observed response</strong></p>
+<ul>
+<li>Status: <code>422 Unprocessable Entity</code></li>
+<li>Message indicates the <code>title</code> field was not supplied</li>
+</ul>
+<p>Evidence:</p>
+<ul>
+<li><code>evidence/raw/TEST-037_POST_repos_owner_repo_issues_422_20251220_0341ET.json</code></li>
+</ul>
+<p><strong>Fix</strong></p>
+<ul>
+<li>Include a non-empty <code>title</code> field in the JSON body.</li>
+</ul>
+<p>Minimal example:</p>
+<pre><code class="language-json">{&quot;title&quot;:&quot;Required title&quot;,&quot;body&quot;:&quot;Optional body&quot;}
+</code></pre>
+<h2 id="when-to-use-the-evidence-artifacts">When to use the evidence artifacts<a class="hlink" href="#when-to-use-the-evidence-artifacts" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><p>If you’re debugging a mismatch between expected and observed behavior, compare:</p>
+<ul>
+<li>The request parameters you sent</li>
+<li>The saved evidence artifact for the corresponding test</li>
+<li>The OpenAPI description (which may include “Verified in: Test #…” notes)</li>
+</ul>
+<hr>
+<h2 id="related-links">Related links<a class="hlink" href="#related-links" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><ul>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/tree/main/guides">Guide index</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/guides/glossary.md">Glossary</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/openapi/openapi.yaml">OpenAPI spec</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/tests/github_api_test_suite.md">Test suite</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/README.md">Evidence package</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/EVIDENCE_MATRIX.md">Evidence matrix</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/TRACEABILITY_MAP.md">Traceability map</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/evidence/manifest.json">Evidence manifest</a></li>
+</ul>
+
+        <nav class="pager" aria-label="Guide navigation"><a href="./pagination-and-filters.html" title="Pagination and Filtering">← Pagination and Filtering</a><a href="./support-checklist.html" title="Support checklist">Support checklist →</a></nav>
+        <div class="foot">Generated from <code>guides/</code> into <code>docs\guides/</code>.</div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
