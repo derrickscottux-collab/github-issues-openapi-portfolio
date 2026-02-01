@@ -9,6 +9,17 @@ Every non-trivial behavior claim is backed by a Postman test and saved request/r
 
 ![Rendered API docs](assets/rendered-docs.png)
 
+## Guides (start here)
+
+Task-based guides that complement the rendered reference docs:
+
+- Guide index: `guides/README.md`
+- Quickstart: `guides/quickstart.md`
+- Pagination and filtering: `guides/pagination-and-filters.md`
+- Errors and troubleshooting: `guides/errors-and-troubleshooting.md`
+- Support checklist: `guides/support-checklist.md`
+- Glossary: `guides/glossary.md`
+
 ## Live docs
 
 - Hosted (GitHub Pages): [View live docs](https://derrickscottux-collab.github.io/github-issues-openapi-portfolio)
@@ -32,6 +43,13 @@ Issue comments
 - `GET /repos/{owner}/{repo}/issues/comments/{comment_id}` (Get an issue comment)
 - `PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}` (Update an issue comment)
 - `DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}` (Delete an issue comment)
+
+## Known limitations (by design)
+
+- This repo covers only the endpoints and behaviors verified in `tests/github_api_test_suite.md` and `evidence/raw/` (ET timestamps in filenames).
+- Evidence reflects observations during **2025-12-10 to 2026-01-06 (ET)**; GitHub behavior may change over time.
+- Authentication is documented at a practical level (Bearer token), but token scope and org policy outcomes are environment-specific.
+- Rate limiting is referenced via headers, but rate-limit behavior is not exhaustively tested in this portfolio scope.
 
 ## Evidence and traceability
 
@@ -115,6 +133,7 @@ If GitHub Pages tries to process it as Jekyll, add an empty file:
 - `openapi/redocly.yaml` - Redocly lint/build config
 - `tests/github_api_test_suite.md` - test definitions and verification notes
 - `evidence/` - evidence indexes, traceability map, and raw response artifacts
+- `guides/` - task-based guides (quickstart, pagination, troubleshooting, support checklist)
 - `docs/index.html` - generated HTML docs (commit for GitHub Pages hosting)
 - `assets/` - screenshots (for README visuals)
 
