@@ -11,18 +11,21 @@ Every non-trivial behavior claim is backed by a Postman test and saved request/r
 
 ## Guides (start here)
 
-Task-based guides that complement the rendered reference docs:
+Task-based guides that complement the rendered reference docs.
 
-- Guide index: `guides/README.md`
-- Quickstart: `guides/quickstart.md`
-- Pagination and filtering: `guides/pagination-and-filters.md`
-- Errors and troubleshooting: `guides/errors-and-troubleshooting.md`
-- Support checklist: `guides/support-checklist.md`
-- Glossary: `guides/glossary.md`
+- **Guides (live HTML):** https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/index.html
+- **Guides (source Markdown in repo):**
+  - [Guide index](guides/README.md)
+  - [Quickstart](guides/quickstart.md)
+  - [Pagination and filtering](guides/pagination-and-filters.md)
+  - [Errors and troubleshooting](guides/errors-and-troubleshooting.md)
+  - [Support checklist](guides/support-checklist.md)
+  - [Glossary](guides/glossary.md)
 
 ## Live docs
 
-- Hosted (GitHub Pages): [View live docs](https://derrickscottux-collab.github.io/github-issues-openapi-portfolio)
+- **API reference (Redoc, GitHub Pages):** https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/
+- **Guides (HTML, GitHub Pages):** https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/index.html
 - Local build output: `docs/index.html`
 
 ## Scope

@@ -8,6 +8,9 @@ info:
   description: 'Evidence-based OpenAPI 3.0.3 specification for a tested subset of the GitHub Issues REST API.
 
 
+    Official docs: https://docs.github.com/rest
+
+
     Scope:
 
     - Only the endpoints and behaviors documented in this file are in scope.
@@ -18,11 +21,7 @@ info:
     Evidence approach:
 
     - Non-trivial behavioral claims include a "Verified in: Test #X" line that maps to the Postman test suite and evidence
-    packets.
-    
-    Official GitHub REST docs:
-    
-    - https://docs.github.com/rest'
+    packets.'
     
     
 servers:
@@ -1700,4 +1699,4 @@ components:
           comments: 2
 externalDocs:
   description: Guides (Quickstart, pagination, troubleshooting)
-  url: https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/
+  url: https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/index.html
