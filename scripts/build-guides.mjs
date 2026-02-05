@@ -31,6 +31,11 @@ const cssPath = path.join(outDir, "guides.css");
 // Update these to match your project
 const SITE_BASE = "https://derrickscottux-collab.github.io/github-issues-openapi-portfolio";
 const REPO_URL = "https://github.com/derrickscottux-collab/github-issues-openapi-portfolio";
+const META_LINKS = [
+  { label: "Release notes (v2.0)", url: "https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/docs/release-notes/v2.0.md" },
+  { label: "Migration guide (v1 → v2)", url: "https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/docs/migration/v1-to-v2.md" },
+  { label: "Verification checklist (v2.0)", url: "https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/docs/verification/v2.0-verification.md" },
+];
 const REFERENCE_URL = `${SITE_BASE}/`;                    // Redoc output (docs/index.html)
 const GUIDES_HOME_URL = `${SITE_BASE}/guides/index.html`; // IMPORTANT: link directly to index.html
 
@@ -707,10 +712,20 @@ function buildOtherGuidesNav(currentHtmlFile) {
     .map((p) => `<a class="tocItem" href="./${p.htmlFile}" title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</a>`)
     .join("\n");
 
-  return `<div class="tocSection">
+  
+const metaLinks = META_LINKS
+  .map((l) => `<a class="tocItem" href="${l.url}" target="_blank" rel="noreferrer">${escapeHtml(l.label)}</a>`)
+  .join("\n");
+
+return `<div class="tocSection">
     <div class="tocTitle">Guides</div>
     ${homeLink}
     ${links || ""}
+  </div>
+
+  <div class="tocSection">
+    <div class="tocTitle">Meta</div>
+    ${metaLinks || ""}
   </div>`;
 }
 
