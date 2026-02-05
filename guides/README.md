@@ -13,6 +13,12 @@
 - **Support checklist:** [`support-checklist.md`](support-checklist.md)
 - **Glossary:** [`glossary.md`](glossary.md)
 
+## Release notes and migration
+
+- **Release notes (v2.0):** https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/docs/release-notes/v2.0.md
+- **Migration guide (v1 → v2):** https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/docs/migration/v1-to-v2.md
+- **Verification checklist (v2.0):** https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/docs/verification/v2.0-verification.md
+
 ## What these guides add (beyond the OpenAPI spec)
 
 - Fast onboarding path (quickstart)

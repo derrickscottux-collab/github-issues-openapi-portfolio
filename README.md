@@ -22,10 +22,18 @@ Task-based guides that complement the rendered reference docs.
   - [Support checklist](guides/support-checklist.md)
   - [Glossary](guides/glossary.md)
 
+
+### Release notes and migration
+
+- [Release notes (v2.0)](docs/release-notes/v2.0.md)
+- [Migration guide (v1 → v2)](docs/migration/v1-to-v2.md)
+- [Verification checklist (v2.0)](docs/verification/v2.0-verification.md)
+
 ## Live docs
 
 - **API reference (Redoc, GitHub Pages):** https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/
 - **Guides (HTML, GitHub Pages):** https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/index.html
+- **Release notes and migration (repo):** [v2.0](docs/release-notes/v2.0.md) · [v1 → v2](docs/migration/v1-to-v2.md) · [verification](docs/verification/v2.0-verification.md)
 - Local build output: `docs/index.html`
 
 ## Scope

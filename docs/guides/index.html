@@ -25,7 +25,7 @@
   <div class="wrap">
     <section class="headerCard">
       <p class="kicker">Portfolio guides</p>
-      <div class="h1">Guides</div>
+      <div class="h1">Github Issues API Guides</div>
       <p class="sub">Task-focused guides that complement the OpenAPI reference docs (Redoc).</p>
     </section>
 
@@ -34,6 +34,7 @@
         <div class="tocTitle">On this page</div>
         <div>
           <a class="tocItem" href="#start-here">Start here</a>
+<a class="tocItem" href="#release-notes-and-migration">Release notes and migration</a>
 <a class="tocItem" href="#what-these-guides-add-beyond-the-openapi-spec">What these guides add (beyond the OpenAPI spec)</a>
 <a class="tocItem" href="#known-limitations-by-design">Known limitations (by design)</a>
 <a class="tocItem" href="#related-links">Related links</a>
@@ -47,18 +48,30 @@
 <a class="tocItem" href="./support-checklist.html" title="Support checklist">Support checklist</a>
 <a class="tocItem" href="./glossary.html" title="Glossary">Glossary</a>
   </div>
+
+  <div class="tocSection">
+    <div class="tocTitle">Meta</div>
+    <a class="tocItem" href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/docs/release-notes/v2.0.md" target="_blank" rel="noreferrer">Release notes (v2.0)</a>
+<a class="tocItem" href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/docs/migration/v1-to-v2.md" target="_blank" rel="noreferrer">Migration guide (v1 → v2)</a>
+<a class="tocItem" href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/docs/verification/v2.0-verification.md" target="_blank" rel="noreferrer">Verification checklist (v2.0)</a>
+  </div>
       </aside>
 
       <main class="content">
         <h1 id="guides">Guides</h1><p>Audience: Developers integrating with the GitHub Issues REST API (portfolio subset)</p>
 <p>Scope: Task-based documentation that complements the rendered OpenAPI reference docs. These guides are designed to be readable on GitHub and easy to link from a docs site.</p>
 <h2 id="start-here">Start here<a class="hlink" href="#start-here" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><ul class="guidesIndexLinks">
-<li> <a href="./quickstart.html" class="guideTile"> <span class="tileMeta"> <span class="tileTitle">Quickstart</span> <span class="tileHint">Open guide</span> </span> <span class="tileArrow" aria-hidden="true">→</span> </a></li>
-<li> <a href="./pagination-and-filters.html" class="guideTile"> <span class="tileMeta"> <span class="tileTitle">Pagination And Filters</span> <span class="tileHint">Open guide</span> </span> <span class="tileArrow" aria-hidden="true">→</span> </a></li>
-<li> <a href="./errors-and-troubleshooting.html" class="guideTile"> <span class="tileMeta"> <span class="tileTitle">Errors And Troubleshooting</span> <span class="tileHint">Open guide</span> </span> <span class="tileArrow" aria-hidden="true">→</span> </a></li>
-<li> <a href="./support-checklist.html" class="guideTile"> <span class="tileMeta"> <span class="tileTitle">Support Checklist</span> <span class="tileHint">Open guide</span> </span> <span class="tileArrow" aria-hidden="true">→</span> </a></li>
-<li> <a href="./glossary.html" class="guideTile"> <span class="tileMeta"> <span class="tileTitle">Glossary</span> <span class="tileHint">Open guide</span> </span> <span class="tileArrow" aria-hidden="true">→</span> </a></li>
+<li><a href="./quickstart.html" class="guideTile"> <span class="tileMeta"> <span class="tileTitle">Quickstart</span> <span class="tileHint">Open guide</span> </span> <span class="tileArrow" aria-hidden="true">→</span> </a></li>
+<li><a href="./pagination-and-filters.html" class="guideTile"> <span class="tileMeta"> <span class="tileTitle">Pagination And Filters</span> <span class="tileHint">Open guide</span> </span> <span class="tileArrow" aria-hidden="true">→</span> </a></li>
+<li><a href="./errors-and-troubleshooting.html" class="guideTile"> <span class="tileMeta"> <span class="tileTitle">Errors And Troubleshooting</span> <span class="tileHint">Open guide</span> </span> <span class="tileArrow" aria-hidden="true">→</span> </a></li>
+<li><a href="./support-checklist.html" class="guideTile"> <span class="tileMeta"> <span class="tileTitle">Support Checklist</span> <span class="tileHint">Open guide</span> </span> <span class="tileArrow" aria-hidden="true">→</span> </a></li>
+<li><a href="./glossary.html" class="guideTile"> <span class="tileMeta"> <span class="tileTitle">Glossary</span> <span class="tileHint">Open guide</span> </span> <span class="tileArrow" aria-hidden="true">→</span> </a></li>
 </ul>
+<h2 id="release-notes-and-migration">Release notes and migration<a class="hlink" href="#release-notes-and-migration" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2>
+<ul>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/docs/release-notes/v2.0.md">Release notes (v2.0)</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/docs/migration/v1-to-v2.md">Migration guide (v1 → v2)</a></li>
+<li><a href="https://github.com/derrickscottux-collab/github-issues-openapi-portfolio/blob/main/docs/verification/v2.0-verification.md">Verification checklist (v2.0)</a></li></ul>
 <h2 id="what-these-guides-add-beyond-the-openapi-spec">What these guides add (beyond the OpenAPI spec)<a class="hlink" href="#what-these-guides-add-beyond-the-openapi-spec" aria-label="Permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 13.41a1 1 0 0 1 0-1.41l3.59-3.59a3 3 0 1 1 4.24 4.24l-2.12 2.12a1 1 0 1 1-1.41-1.41l2.12-2.12a1 1 0 1 0-1.41-1.41l-3.59 3.59a1 1 0 0 1-1.41 0Z"/><path d="M13.41 10.59a1 1 0 0 1 0 1.41l-3.59 3.59a3 3 0 1 1-4.24-4.24l2.12-2.12a1 1 0 1 1 1.41 1.41l-2.12 2.12a1 1 0 1 0 1.41 1.41l3.59-3.59a1 1 0 0 1 1.41 0Z"/></svg></a></h2><ul>
 <li>Fast onboarding path (quickstart)</li>
 <li>Evidence-backed notes on defaults, caps, and invalid inputs</li>
