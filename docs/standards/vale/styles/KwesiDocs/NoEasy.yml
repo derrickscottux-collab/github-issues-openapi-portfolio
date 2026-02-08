@@ -1,0 +1,7 @@
+extends: substitution
+message: "Avoid '%s' unless you explain why or provide criteria."
+level: suggestion
+ignorecase: true
+swap:
+  easy: straightforward
+  simply: directly
