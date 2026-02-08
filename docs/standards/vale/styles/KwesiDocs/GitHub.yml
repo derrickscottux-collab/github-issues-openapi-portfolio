@@ -1,0 +1,6 @@
+extends: substitution
+message: "Use '%s' consistently."
+level: suggestion
+ignorecase: false
+swap:
+  Github: GitHub
