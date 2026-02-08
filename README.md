@@ -11,14 +11,13 @@ Every non-trivial behavior claim is backed by a Postman test and saved request/r
 
 ## Guides (start here)
 
-## Documentation standards
-
 Use the documentation standards kit for templates, review checklist, and publishing conventions: `docs/standards/`
 
 Task-based guides that complement the rendered reference docs.
 
 - **Guides (live HTML):** https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/index.html
 - **Guides (source Markdown in repo):**
+  
   - [Guide index](guides/README.md)
   - [Quickstart](guides/quickstart.md)
   - [Pagination and filtering](guides/pagination-and-filters.md)
