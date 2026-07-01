@@ -15,7 +15,7 @@ Use the documentation standards kit for templates, review checklist, and publish
 
 Task-based guides that complement the rendered reference docs.
 
-- **Guides (live HTML):** https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/index.html
+- **Guides (live HTML):** https://derrick-scott.github.io/github-issues-openapi-portfolio/guides/index.html
 - **Guides (source Markdown in repo):**
   
   - [Guide index](guides/README.md)
@@ -34,8 +34,8 @@ Task-based guides that complement the rendered reference docs.
 
 ## Live docs
 
-- **API reference (Redoc, GitHub Pages):** https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/
-- **Guides (HTML, GitHub Pages):** https://derrickscottux-collab.github.io/github-issues-openapi-portfolio/guides/index.html
+- **API reference (Redoc, GitHub Pages):** https://derrick-scott.github.io/github-issues-openapi-portfolio/
+- **Guides (HTML, GitHub Pages):** https://derrick-scott.github.io/github-issues-openapi-portfolio/guides/index.html
 - **Release notes and migration (repo):** [v2.0](docs/release-notes/v2.0.md) · [v1 → v2](docs/migration/v1-to-v2.md) · [verification](docs/verification/v2.0-verification.md)
 - Local build output: `docs/index.html`
 
